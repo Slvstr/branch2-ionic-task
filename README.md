@@ -16,7 +16,7 @@ Please build this app and commit your code when finished.
 
 Pick and choose any additional bonus tasks you would like to add, these are in no particular order.
 
- - [ ]Add any additional styles you wish, in order to improve the UI
- - [ ]Implement other ways of defining and tracking goals. Be creative.
- - [ ]Implement a graph of the user's progress over time. Feel free to load your backend with historical data. Use of D3.js is recommended but not required.
- - [ ]If a user has multiple goals, try to find correlations between their performance on one goal and their performance on another to create an insight such as "When you drink 5 glasses of water per day you are less likely to eat cake." Display these insights in the app somewhere.
+ - [ ] Add any additional styles you wish, in order to improve the UI
+ - [ ] Implement other ways of defining and tracking goals. Be creative.
+ - [ ] Implement a graph of the user's progress over time. Feel free to load your backend with historical data. Use of D3.js is recommended but not required.
+ - [ ] If a user has multiple goals, try to find correlations between their performance on one goal and their performance on another to create an insight such as "When you drink 5 glasses of water per day you are less likely to eat cake." Display these insights in the app somewhere.

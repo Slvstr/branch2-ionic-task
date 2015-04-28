@@ -1,4 +1,18 @@
-angular.module('starter.services', [])
+angular.module('goaltracker.services', ['firebase'])
+
+
+/******************************************************************************
+ * Wrap $firebaseAuth service in our own Auth factory
+ *****************************************************************************/
+.factory('Auth', ['$firebaseAuth', function($firebaseAuth) {
+  var FIREBASE_URL = 'https://branch2-goal-tracker.firebaseio.com/';
+  var ref = new Firebase(FIREBASE_URL);
+
+  return $firebaseAuth(ref);
+
+}])
+
+
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array

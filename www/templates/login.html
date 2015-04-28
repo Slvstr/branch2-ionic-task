@@ -1,0 +1,28 @@
+<div class="login">
+  <div class="login-text">
+    <h2>Welcome!</h2>
+    <h2>Please Log In To Continue</h2>  
+  </div>
+
+  <div class="login-control">
+    <form ng-submit="login()">
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-at"></i>
+          <input type="email" ng-model="email" placeholder="Email" required>
+        </label>
+
+        <label class="item item-input">
+          <i class="icon ion-ios-locked"></i>
+          <input type="password" ng-model="password" placeholder="password" required>
+        </label>
+      </div>
+      <button type="submit" class="button button-full button-positive">
+        Log In!
+      </button>
+    </form>
+  </div>  
+</div>
+
+
+

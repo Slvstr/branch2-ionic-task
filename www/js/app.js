@@ -1,13 +1,6 @@
-// Ionic Starter App
+angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.services'])
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
-
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, Auth, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +12,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       StatusBar.styleLightContent();
     }
   });
+
+
+  // When user is logged out send them to the login state
+  Auth.$onAuth(function(authData) {
+    if (!authData) {
+      $state.go('login');
+    }
+  });
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -28,6 +30,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
+
+  // Login state
+
+  .state('login', {
+    url: '/login',
+    cache: false, // Don't cache login view so the controller can hide the navbar each time it is shown
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
 
   // setup an abstract state for the tabs directive
     .state('tab', {
@@ -78,6 +89,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/login');
 
 });

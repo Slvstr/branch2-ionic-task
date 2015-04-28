@@ -1,15 +1,27 @@
 angular.module('goaltracker.services', ['firebase'])
 
+// Just create the base firebase ref once
+.factory('FirebaseRef', function() {
+  var FIREBASE_URL = 'https://branch2-goal-tracker.firebaseio.com/';
+
+  return new Firebase(FIREBASE_URL);
+})
 
 /******************************************************************************
  * Wrap $firebaseAuth service in our own Auth factory
  *****************************************************************************/
-.factory('Auth', ['$firebaseAuth', function($firebaseAuth) {
-  var FIREBASE_URL = 'https://branch2-goal-tracker.firebaseio.com/';
-  var ref = new Firebase(FIREBASE_URL);
+.factory('Auth', ['$firebaseAuth', 'FirebaseRef', function($firebaseAuth, FirebaseRef) {
 
-  return $firebaseAuth(ref);
+  return $firebaseAuth(FirebaseRef);
 
+}])
+
+
+.factory('Goals', ['FirebaseRef', '$firebaseArray', function(FirebaseRef, $firebaseArray) {
+  return function GoalList(uid) {
+    var goalsRef = FirebaseRef.child('goals').child(uid);
+    return $firebaseArray(goalsRef);
+  };
 }])
 
 

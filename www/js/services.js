@@ -17,12 +17,41 @@ angular.module('goaltracker.services', ['firebase'])
 }])
 
 
-.factory('Goals', ['FirebaseRef', '$firebaseArray', function(FirebaseRef, $firebaseArray) {
-  return function GoalList(uid) {
-    var goalsRef = FirebaseRef.child('goals').child(uid);
-    return $firebaseArray(goalsRef);
+.factory('GoalsService', ['FirebaseRef', '$firebaseArray', 'Auth', function(FirebaseRef, $firebaseArray, Auth) {
+  
+  // Returns promise for use in a resolve block for the router
+  return function() {
+    return Auth.$waitForAuth().then(function(authData) {
+      var goalsRef = FirebaseRef.child('goals').child(authData.uid);
+      return $firebaseArray(goalsRef);
+
+    });    
   };
+
+
+  // return function GoalList(uid) {
+  //   var goalsRef = FirebaseRef.child('goals').child(uid);
+  //   var GoalList = {}
+  // };
 }])
+
+
+.factory('Goal', function() {
+  function Goal(name, description, target) {
+    this.name = name;
+    this.description = description;
+    this.target = target;
+
+    // progress is a hash of timestamps to # of completed events
+    // timestamps will be in UTC, and when adding new progress events we will 
+    // compare the last timestamp to the current time and if they are within 
+    // from the same day according to local time we will increment the existing object
+    // Otherwise we create a new progress entry.  
+    this.progress = {};
+  }
+
+  return Goal;
+})
 
 
 

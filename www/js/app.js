@@ -1,6 +1,10 @@
 angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.services'])
 
-.run(function($ionicPlatform, Auth, $state) {
+
+/******************************************************************************
+ * Run 
+ *****************************************************************************/
+.run(function($ionicPlatform, Auth, $state, GoalsService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,8 +25,25 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
     }
   });
 
+
+  // Testing Data: stick a goal in the firebase db
+  // GoalsService().then(function(fbArray) {
+  //   var timestamp = Date.now();
+  //   fbArray.$add({
+  //     name: 'Test Goal #2',
+  //     description: 'Second goal talky talk',
+  //     target: 3,
+  //     progress: [{progress_date: timestamp, numCompleted: 2}]
+  //   });
+  // });
+
 })
 
+
+
+/******************************************************************************
+ * Router
+ *****************************************************************************/
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -56,6 +77,27 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
         templateUrl: 'templates/tab-dash.html',
         controller: 'DashCtrl'
       }
+    }
+  })
+
+  .state('tab.goals', {
+    url: '/goals',
+    views: {
+      'tab-goals': {
+        templateUrl: 'templates/tab-goals.html',
+        controller: 'GoalsCtrl'
+      }
+    },
+    resolve: {
+      UserID: ['Auth', function(Auth) {
+        return Auth.$requireAuth().then(function(authData) {
+          // console.dir(authData);
+          return authData.uid;
+        });
+      }],
+      Goals: ['GoalsService', function(GoalsService) {
+        return GoalsService();
+      }]
     }
   })
 

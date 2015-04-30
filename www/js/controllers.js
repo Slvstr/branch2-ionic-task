@@ -21,6 +21,14 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 
 .controller('DashCtrl', function($scope) {})
 
+
+// Controller for Goals list view
+.controller('GoalsCtrl', ['$scope', 'Goals', 'UserID', function($scope, Goals) {
+  $scope.goals = Goals;
+  console.dir($scope.goals);
+
+}])
+
 .controller('ChatsCtrl', function($scope, Chats) {
   $scope.chats = Chats.all();
   $scope.remove = function(chat) {

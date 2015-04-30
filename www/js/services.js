@@ -17,89 +17,99 @@ angular.module('goaltracker.services', ['firebase'])
 }])
 
 
-.factory('GoalsService', ['FirebaseRef', '$firebaseArray', 'Auth', function(FirebaseRef, $firebaseArray, Auth) {
-  
-  // Returns promise for use in a resolve block for the router
-  return function() {
-    return Auth.$waitForAuth().then(function(authData) {
-      var goalsRef = FirebaseRef.child('goals').child(authData.uid);
-      return $firebaseArray(goalsRef);
-
-    });    
-  };
 
 
-  // return function GoalList(uid) {
-  //   var goalsRef = FirebaseRef.child('goals').child(uid);
-  //   var GoalList = {}
-  // };
+/******************************************************************************
+ * FirebaseGoal Service
+ * Extends $firebaseObject to add methods for managing progress events
+ *****************************************************************************/
+.factory('FirebaseGoal', ['$filter', '$firebaseObject', function($filter, $firebaseObject) {
+  // Helper function to compare two Date timestamps.
+  // Converts input dates to mm/dd/yy format to make comparison;
+  function isSameDate(date1, date2) {
+    var shortDate1 = $filter('date')(date1, 'shortDate');
+    var shortDate2 = $filter('date')(date2, 'shortDate');
+
+    return shortDate1 === shortDate2;
+  }
+
+
+  return $firebaseObject.$extend({
+
+    getActiveProgress: function() {
+      var lastProgress = this.progress[this.progress.length-1];
+      var lastProgressDate = lastProgress.progressDate;
+      var today = Date.now();
+
+      // If the last progress event is from the current day, return that.  Otherwise, return a new
+      // progress object.  (NOTE: new progress objects are not persisted until progress happens)
+      return isSameDate(lastProgressDate, today) ? lastProgress : {progressDate: today, count: 0};
+    },
+
+    addProgress: function() {
+      var activeProgress = this.getActiveProgress();
+
+      // If there are already progress events we just need to increment the count
+      // because the object is already present in the this.progress array
+      if (activeProgress.count) {
+        activeProgress.count++;
+      }
+      // New progress events need to be added to the progress array 
+      else {
+        activeProgress.count++;
+        this.progress.push(activeProgress);
+      }
+
+      // Persist changes to this goal
+      return this.$save();
+    }
+  });
+
 }])
 
 
-.factory('Goal', function() {
-  function Goal(name, description, target) {
-    this.name = name;
-    this.description = description;
-    this.target = target;
 
-    // progress is a hash of timestamps to # of completed events
-    // timestamps will be in UTC, and when adding new progress events we will 
-    // compare the last timestamp to the current time and if they are within 
-    // from the same day according to local time we will increment the existing object
-    // Otherwise we create a new progress entry.  
-    this.progress = {};
-  }
-
-  return Goal;
-})
-
-
-
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }, {
-    id: 2,
-    name: 'Andrew Jostlin',
-    lastText: 'Did you get the ice cream?',
-    face: 'https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg'
-  }, {
-    id: 3,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 4,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg'
-  }];
-
-  return {
-    all: function() {
-      return chats;
+/******************************************************************************
+ * Extends $firebaseArray to create an instance of FirebaseGoal for each 
+ * memeber of the array
+ *****************************************************************************/
+.factory('FirebaseGoals', ['$firebaseArray', 'FirebaseGoal', function($firebaseArray, FirebaseGoal) {
+  console.log(typeof $firebaseArray.$extend);
+  return $firebaseArray.$extend({
+    $$added: function(snap) {
+      var goalRef = snap.ref();
+      var fbGoalInstance = new FirebaseGoal(goalRef);
+      console.dir(fbGoalInstance);
+      return fbGoalInstance;
     },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
-      }
-      return null;
+    customMethod: function() {
+      console.log('custom method to test that goals list is using extended FirebaseGoals');
     }
+  });
+}])
+
+
+
+
+/******************************************************************************
+ * GoalsService:
+ * Returns promise for use in a resolve block for the router
+ * This is because we first need a user id before we can fetch the user's goals
+ * An alternative approach would be to return a factory function that the goals 
+ * controller could call after getting a user id from Auth.  Since the goals view
+ * is worthless without the user's goals, it seemed more appropriate to ensure
+ * they are loaded via resolve
+ *****************************************************************************/
+.factory('GoalsService', ['FirebaseRef', 'FirebaseGoals', 'Auth', function(FirebaseRef, FirebaseGoals, Auth) {
+  
+  return function() {
+    return Auth.$waitForAuth().then(function(authData) {
+      var goalsRef = FirebaseRef.child('goals').child(authData.uid);
+      return new FirebaseGoals(goalsRef);
+
+    });
   };
-});
+
+}]);
+
+

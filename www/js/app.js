@@ -1,10 +1,10 @@
-angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.services'])
+angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.services', 'goaltracker.directives'])
 
 
 /******************************************************************************
  * Run 
  *****************************************************************************/
-.run(function($ionicPlatform, Auth, $state, GoalsService) {
+.run(function($ionicPlatform, Auth, $state, GoalList) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -30,10 +30,10 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
   // GoalsService().then(function(fbArray) {
   //   var timestamp = Date.now();
   //   fbArray.$add({
-  //     name: 'Test Goal #2',
-  //     description: 'Second goal talky talk',
+  //     name: 'Test Goal #1',
+  //     description: 'First goal talky talk',
   //     target: 3,
-  //     progress: [{progress_date: timestamp, numCompleted: 2}]
+  //     progress: [{progressDate: timestamp, count: 2}]
   //   });
   // });
 
@@ -95,9 +95,22 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
           return authData.uid;
         });
       }],
-      Goals: ['GoalsService', function(GoalsService) {
-        return GoalsService();
+      Goals: ['GoalList', function(GoalList) {
+        return GoalList.then(function(goals) {
+          return goals.$loaded();
+        });
       }]
+    }
+  })
+
+
+  .state('tab.goal-detail', {
+    url: '/goals/:goalID',
+    views: {
+      'tab-goals': {
+        templateUrl: 'templates/goal-detail.html',
+        controller: 'GoalDetailCtrl'
+      }
     }
   })
 

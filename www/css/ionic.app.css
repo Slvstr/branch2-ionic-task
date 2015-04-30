@@ -7692,3 +7692,28 @@ a.button {
     margin-bottom: 80px; }
   .login-control i {
     margin-right: 10px; }
+
+.add-goal-button-bar {
+  position: fixed;
+  width: 100%;
+  height: 50px;
+  bottom: 70px;
+  background: rgba(111, 111, 111, 0.07);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 2px 2px #fff; }
+
+.add-goal-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  color: white;
+  box-shadow: 0 2px 2px 1px #fff; }
+  .add-goal-button i:before {
+    font-size: 40px !important; }
+
+.add-progress {
+  color: #387ef5;
+  position: absolute;
+  left: 15px; }

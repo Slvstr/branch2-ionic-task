@@ -33,11 +33,15 @@ angular.module('goaltracker.services', ['firebase'])
     return shortDate1 === shortDate2;
   }
 
+  var progressCheckCounter = 0;
 
   return $firebaseObject.$extend({
 
     getActiveProgress: function() {
-      var lastProgress = this.progress[this.progress.length-1];
+      progressCheckCounter++;
+      console.log('getActiveProgress has been called ' + progressCheckCounter + ' times');
+      var self = this;
+      var lastProgress = self.progress[self.progress.length-1];
       var lastProgressDate = lastProgress.progressDate;
       var today = Date.now();
 
@@ -47,6 +51,7 @@ angular.module('goaltracker.services', ['firebase'])
     },
 
     addProgress: function() {
+      console.log('in addProgress()')
       var activeProgress = this.getActiveProgress();
 
       // If there are already progress events we just need to increment the count
@@ -74,16 +79,12 @@ angular.module('goaltracker.services', ['firebase'])
  * memeber of the array
  *****************************************************************************/
 .factory('FirebaseGoals', ['$firebaseArray', 'FirebaseGoal', function($firebaseArray, FirebaseGoal) {
-  console.log(typeof $firebaseArray.$extend);
   return $firebaseArray.$extend({
     $$added: function(snap) {
       var goalRef = snap.ref();
       var fbGoalInstance = new FirebaseGoal(goalRef);
       console.dir(fbGoalInstance);
       return fbGoalInstance;
-    },
-    customMethod: function() {
-      console.log('custom method to test that goals list is using extended FirebaseGoals');
     }
   });
 }])
@@ -100,15 +101,28 @@ angular.module('goaltracker.services', ['firebase'])
  * is worthless without the user's goals, it seemed more appropriate to ensure
  * they are loaded via resolve
  *****************************************************************************/
-.factory('GoalsService', ['FirebaseRef', 'FirebaseGoals', 'Auth', function(FirebaseRef, FirebaseGoals, Auth) {
+.factory('GoalList', ['FirebaseRef', 'FirebaseGoals', 'Auth', '$q', function(FirebaseRef, FirebaseGoals, Auth, $q) {
   
-  return function() {
-    return Auth.$waitForAuth().then(function(authData) {
-      var goalsRef = FirebaseRef.child('goals').child(authData.uid);
-      return new FirebaseGoals(goalsRef);
-
+  // Returns a promise that is resolved with our extended $firebaseArray when the user is authenticated
+  return $q(function(resolve, reject) {
+    var goalsRef;
+    
+    Auth.$onAuth(function(authData) {
+      if (authData && authData.uid) {
+        goalsRef = FirebaseRef.child('goals').child(authData.uid);
+        resolve(new FirebaseGoals(goalsRef));
+      }
     });
-  };
+  });
+
+
+  // return function() {
+  //   return Auth.$waitForAuth().then(function(authData) {
+  //     var goalsRef = FirebaseRef.child('goals').child(authData.uid);
+  //     return new FirebaseGoals(goalsRef);
+
+  //   });
+  // };
 
 }]);
 

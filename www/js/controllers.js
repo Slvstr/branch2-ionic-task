@@ -25,16 +25,24 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 // Controller for Goals list view
 .controller('GoalsCtrl', ['$scope', 'Goals', 'UserID', function($scope, Goals) {
   $scope.goals = Goals;
-  console.dir($scope.goals);
+
+
+  $scope.addProgress = function($event, goal) {
+    $event.preventDefault();
+    return goal.addProgress();
+  };
+
 
 }])
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }
-})
+
+.controller('GoalDetailCtrl', ['$scope', '$stateParams', 'GoalList', function($scope, $stateParams, GoalList) {
+  GoalList.then(function(goals) {
+    $scope.goal = goals.$getRecord($stateParams.goalID);
+  })
+}])
+
+
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);

@@ -7720,3 +7720,7 @@ a.button {
 .add-progress:before {
   margin-right: 10px;
   margin-top: 20px; }
+
+.input-label-center {
+  text-align: center;
+  margin: 0 auto; }

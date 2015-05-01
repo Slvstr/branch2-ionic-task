@@ -36,6 +36,16 @@ angular.module('goaltracker.services', ['firebase'])
     return shortDate1 === shortDate2;
   }
 
+  function ProgressObject(timestamp) {
+    // Handle being called without 'new' keyword
+    if (!(this instanceof ProgressObject)) {
+      return new ProgressObject(timestamp);
+    }
+
+    this.progressDate = timestamp;
+    this.count = 0;
+  }
+
   var progressCheckCounter = 0;
 
   return $firebaseObject.$extend({
@@ -44,13 +54,18 @@ angular.module('goaltracker.services', ['firebase'])
       progressCheckCounter++;
       console.log('getActiveProgress has been called ' + progressCheckCounter + ' times');
       var self = this;
+      console.dir(self);
+      var today = Date.now();
+      // If the goal has no progress there is no use in comparing dates.  Just return 
+      if (!self.progress || !self.progress.length) {
+        return new ProgressObject(today);
+      }
       var lastProgress = self.progress[self.progress.length-1];
       var lastProgressDate = lastProgress.progressDate;
-      var today = Date.now();
 
       // If the last progress event is from the current day, return that.  Otherwise, return a new
       // progress object.  (NOTE: new progress objects are not persisted until progress happens)
-      return isSameDate(lastProgressDate, today) ? lastProgress : {progressDate: today, count: 0};
+      return isSameDate(lastProgressDate, today) ? lastProgress : new ProgressObject(today);
     },
 
     addProgress: function() {
@@ -64,6 +79,7 @@ angular.module('goaltracker.services', ['firebase'])
       // New progress events need to be added to the progress array 
       else {
         activeProgress.count++;
+        this.progress = this.progress || []; // Handle goals with no progress
         this.progress.push(activeProgress);
       }
 

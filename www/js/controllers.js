@@ -20,13 +20,45 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 
 
 // Controller for Goals list view
-.controller('GoalsCtrl', ['$scope', 'Goals', 'UserID', function($scope, Goals) {
+.controller('GoalsCtrl', ['$scope', 'Goals', 'UserID', '$ionicModal', function($scope, Goals, UserID, $ionicModal) {
   $scope.goals = Goals;
 
+  $ionicModal.fromTemplateUrl('templates/add-goal.html', {
+    scope: $scope,
+    animation: 'slide-in-up',
+    focusFirstInput: true
+  })
+  .then(function(modal) {
+    $scope.modal = modal;
+  });
 
   $scope.addProgress = function($event, goal) {
     $event.preventDefault();
     return goal.addProgress();
+  };
+
+  $scope.showNewGoalForm = function() {
+    $scope.newGoal = {name: '', description: '', target: 0, progress: []};
+    $scope.modal.show();
+    console.dir($scope.newGoal);
+  };
+
+  // Close new goal modal and clean up newGoal object without saving
+  $scope.closeNewGoalForm = function() {
+    $scope.modal.hide().then(function() {
+      $scope.newGoal = null;
+    });
+  };
+
+  $scope.saveNewGoal = function() {
+    if ($scope.newGoal && $scope.newGoal.name && $scope.newGoal.target) {
+      Goals.$add($scope.newGoal).then(function() {
+        $scope.closeNewGoalForm();
+      });
+    }
+    else {
+      console.log('uh oh');
+    }
   };
 
 

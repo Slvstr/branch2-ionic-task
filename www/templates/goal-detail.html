@@ -1,9 +1,17 @@
 <ion-view>
   <ion-nav-title>{{goal.name}}</ion-nav-title>
   <ion-content class="padding">
-    <h2>{{goal.name}}</h2>
-    <input type="text" ng-model="goal.name">
-    <textarea ng-model="goal.description"></textarea>
+    <div class="list">
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Goal Title</span>
+        <input type="text" ng-model="goal.name" placeholder="Goal Title">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Goal Description</span>
+        <input type="text" ng-model="goal.description" maxlength="160" placeholder="">
+      </label>
+    </div>
+
     <h3>{{goal.target}} x / day</h3>
     <div class="range range-assertive">
       <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>

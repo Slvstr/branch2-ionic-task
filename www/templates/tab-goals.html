@@ -1,22 +1,19 @@
 <ion-view view-title="Goals">
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="goal in goals" type="item-text-wrap" href="#/tab/goals/{{goal.$id}}">
-        <button ng-click="addProgress($event, goal)" class="button button-icon icon ion-ios-plus-outline add-progress"></button>
+      <ion-item class="item-remove-animate item-avatar item-icon-left item-icon-right" ng-repeat="goal in goals" type="item-text-wrap" href="#/tab/goals/{{goal.$id}}">
+        <i ng-click="addProgress($event, goal)" class="button button-icon icon ion-ios-plus-outline add-progress"></i>
         <h2>{{goal.name}}</h2>
         <p>{{goal.description}}</p>
         <p>{{goal.getActiveProgress().count}} out of  {{goal.target}} completed</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="remove(chat)">
+        <ion-option-button class="button-assertive" ng-click="deleteGoal(goal)">
           Delete
         </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>
-  <div class="add-goal-button-bar">
-    <button class="button button-assertive add-goal-button">
-      <i class="icon ion-ios-plus-empty"></i>
-    </button>
+  <div class="button button-assertive icon icon-button ion-ios-plus-empty add-goal-button">
   </div>
 </ion-view>

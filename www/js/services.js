@@ -22,6 +22,9 @@ angular.module('goaltracker.services', ['firebase'])
 /******************************************************************************
  * FirebaseGoal Service
  * Extends $firebaseObject to add methods for managing progress events
+
+  * TODO: This is probably unnecessary given the $save method on $firebaseArray.
+  *       This could just be a Goal class instead.  
  *****************************************************************************/
 .factory('FirebaseGoal', ['$filter', '$firebaseObject', function($filter, $firebaseObject) {
   // Helper function to compare two Date timestamps.
@@ -51,7 +54,6 @@ angular.module('goaltracker.services', ['firebase'])
     },
 
     addProgress: function() {
-      console.log('in addProgress()')
       var activeProgress = this.getActiveProgress();
 
       // If there are already progress events we just need to increment the count

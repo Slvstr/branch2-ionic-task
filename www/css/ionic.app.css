@@ -7693,27 +7693,30 @@ a.button {
   .login-control i {
     margin-right: 10px; }
 
-.add-goal-button-bar {
-  position: fixed;
-  width: 100%;
-  height: 50px;
-  bottom: 70px;
-  background: rgba(111, 111, 111, 0.07);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 1px 1px 2px 2px #fff; }
-
 .add-goal-button {
-  width: 80px;
-  height: 80px;
-  border-radius: 50px;
+  position: fixed;
+  height: 65px;
+  width: 65px;
+  bottom: 75px;
+  border-radius: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
   color: white;
-  box-shadow: 0 2px 2px 1px #fff; }
-  .add-goal-button i:before {
-    font-size: 40px !important; }
+  box-shadow: 1px 2px 2px 1px #ccc; }
+
+.add-goal-button:before {
+  font-size: 70px !important;
+  margin: 30% auto; }
 
 .add-progress {
-  color: #387ef5;
+  color: #ef473a;
   position: absolute;
-  left: 15px; }
+  height: 15px;
+  max-height: 80%;
+  width: 30px;
+  top: 40px;
+  border-radius: 50%; }
+
+.add-progress:before {
+  margin-right: 10px;
+  margin-top: 20px; }

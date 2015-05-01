@@ -1,7 +1,17 @@
-<ion-view view-title="{{goal.name}}">
+<ion-view>
+  <ion-nav-title>{{goal.name}}</ion-nav-title>
   <ion-content class="padding">
-    <p>
-      {{goal.description}}
-    </p>
+    <h2>{{goal.name}}</h2>
+    <input type="text" ng-model="goal.name">
+    <textarea ng-model="goal.description"></textarea>
+    <h3>{{goal.target}} x / day</h3>
+    <div class="range range-assertive">
+      <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
+      <input type="range" name="frequency" min="0" max="{{rangeMax}}" ng-model="goal.target">
+      <i class="icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
+    </div>
   </ion-content>
+  <div class="bar bar-footer">
+    <button class="button button-clear button-assertive" ng-click="deleteGoal()">Delete Goal</button>
+  </div>
 </ion-view>

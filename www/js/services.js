@@ -52,7 +52,7 @@ angular.module('goaltracker.services', ['firebase'])
 
     getActiveProgress: function() {
       progressCheckCounter++;
-      console.log('getActiveProgress has been called ' + progressCheckCounter + ' times');
+      // console.log('getActiveProgress has been called ' + progressCheckCounter + ' times');
       var self = this;
       var today = Date.now();
       // If the goal has no progress there is no use in comparing dates.  Just return 
@@ -100,7 +100,6 @@ angular.module('goaltracker.services', ['firebase'])
     $$added: function(snap) {
       var goalRef = snap.ref();
       var fbGoalInstance = new FirebaseGoal(goalRef);
-      console.dir(fbGoalInstance);
       return fbGoalInstance;
     }
   });

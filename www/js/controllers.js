@@ -1,17 +1,50 @@
 angular.module('goaltracker.controllers', ['goaltracker.services'])
 
-.controller('LoginCtrl', ['Auth', '$state', '$scope', '$ionicNavBarDelegate', function(Auth, $state, $scope, $ionicNavBarDelegate) {
+.controller('LoginCtrl', ['Auth', '$state', '$scope', '$ionicNavBarDelegate', '$ionicLoading',
+  function(Auth, $state, $scope, $ionicNavBarDelegate, $ionicLoading) {
 
   // Hide the nav bar on the login screen
   $ionicNavBarDelegate.showBar(false);
 
+
   // Log user in via Firebase's email/password auth option
   $scope.login = function() {
+
+    //immediately start the loading spinner
+    $ionicLoading.show({
+      template: '<ion-spinner></ion-spinner>',
+      hideOnStateChange: true   // auto-hide when login is successful
+    });
+
+
     Auth.$authWithPassword({
       email: $scope.email,
       password: $scope.password
-    }).then(function(authData) {
+    })
+    .then(function(authData) {
       $state.go('tab.dash');
+    })
+    .catch(function(error) {
+      console.error(error);
+      $ionicLoading.hide();
+
+
+      // Display helpful error messages and styling to alert user to the error
+      if (error.code === 'INVALID_USER') {
+        $scope.loginError = "We don't know anyone with that email...";
+        $scope.emailError = true;
+
+        // Reset both fields
+        $scope.email = undefined;
+        $scope.password = undefined;
+      }
+      if (error.code === 'INVALID_PASSWORD') {
+        $scope.loginError = "Incorrect password...";
+        $scope.passwordError = true;
+
+        // Reset only password field
+        $scope.password = undefined;
+      }
     });
   };
 }])

@@ -1,24 +1,26 @@
 <div class="login">
   <div class="login-text">
-    <h2>Welcome!</h2>
-    <h2>Please Log In To Continue</h2>  
+    <h2>Branch2 Goal Tracker</h2>
   </div>
-
+  
   <div class="login-control padding">
-    <form ng-submit="login()" class="">
+    <form ng-submit="login()">
+      <div class="item bar bar-assertive" ng-show="loginError">
+        {{loginError}}
+      </div>
       <div class="list list-inset">
         <label class="item item-input">
-          <i class="icon ion-at"></i>
+          <i class="icon ion-at" ng-class="{emailError: icon-assertive}"></i>
           <input type="email" ng-model="email" placeholder="Email" required>
         </label>
 
         <label class="item item-input">
-          <i class="icon ion-ios-locked"></i>
+          <i class="icon ion-ios-locked" ng-class="{passwordError: icon-assertive}"></i>
           <input type="password" ng-model="password" placeholder="password" required>
         </label>
       </div>
       <button type="submit" class="button button-block button-positive">
-        Log In!
+        Sign In!
       </button>
     </form>
   </div>  

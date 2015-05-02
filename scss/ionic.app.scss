@@ -30,7 +30,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .login-text {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 200px;
 
   h2 {
     color: $positive;
@@ -38,7 +38,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .login-control {
-  margin-top: 80%;
+  margin-top: 30%;
 
   .list {
     margin-bottom: 80px;
@@ -85,7 +85,19 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 
+.input-item-center {
+  text-align: center;
+  dispaly: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+
 .input-label-center {
   text-align: center;
-  margin: 0 auto;
 }

@@ -1,22 +1,26 @@
 <ion-view>
   <ion-nav-title>{{goal.name}}</ion-nav-title>
   <ion-content class="padding">
-    <div class="list">
+    <div class="card">
       <label class="item item-input item-floating-label">
-        <span class="input-label">Goal Title</span>
-        <input type="text" ng-model="goal.name" placeholder="Goal Title">
+        <span class="input-label input-label-center">Goal Title</span>
+        <input type="text" class="input-label-center" ng-model="goal.name" placeholder="Goal Title">
       </label>
       <label class="item item-input item-floating-label">
-        <span class="input-label">Goal Description</span>
-        <input type="text" ng-model="goal.description" maxlength="160" placeholder="Goal Description">
+        <span class="input-label input-label-center">Goal Description</span>
+        <input type="text" class="input-label-center" ng-model="goal.description" maxlength="160" placeholder="Goal Description">
       </label>
-    </div>
-
-    <h3>{{goal.target}} x / day</h3>
-    <div class="range range-assertive">
-      <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
-      <input type="range" name="frequency" min="0" max="{{rangeMax}}" ng-model="goal.target">
-      <i class="icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
+      <div class="item">
+        <div class="input-label-center">
+          <h2>{{goal.target}}</h2>
+          <h4>times / day</h4>        
+        </div>
+        <div class="range range-assertive">
+          <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
+          <input type="range" name="frequency" min="0" max="{{rangeMax}}" ng-model="goal.target">
+          <i class="icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
+        </div>
+      </div>
     </div>
   </ion-content>
   <div class="bar bar-footer">

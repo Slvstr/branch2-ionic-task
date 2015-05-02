@@ -7682,12 +7682,12 @@ a.button {
 
 .login-text {
   text-align: center;
-  margin-top: 50px; }
+  margin-top: 200px; }
   .login-text h2 {
     color: #387ef5; }
 
 .login-control {
-  margin-top: 80%; }
+  margin-top: 30%; }
   .login-control .list {
     margin-bottom: 80px; }
   .login-control i {
@@ -7721,6 +7721,16 @@ a.button {
   margin-right: 10px;
   margin-top: 20px; }
 
-.input-label-center {
+.input-item-center {
   text-align: center;
-  margin: 0 auto; }
+  dispaly: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center; }
+
+.input-label-center {
+  text-align: center; }

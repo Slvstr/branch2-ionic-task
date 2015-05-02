@@ -54,7 +54,6 @@ angular.module('goaltracker.services', ['firebase'])
       progressCheckCounter++;
       console.log('getActiveProgress has been called ' + progressCheckCounter + ' times');
       var self = this;
-      console.dir(self);
       var today = Date.now();
       // If the goal has no progress there is no use in comparing dates.  Just return 
       if (!self.progress || !self.progress.length) {

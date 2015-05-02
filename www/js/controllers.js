@@ -66,6 +66,17 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
     return $scope.goals.$remove(goal);
   };
 
+
+  // Handlers for arrow buttons to left and right of target range/slider
+  $scope.incrementTarget = function() {
+    $scope.newGoal.target++;
+    console.log('increment target called');
+  };
+
+  $scope.decrementTarget = function() {
+    $scope.newGoal.target--;
+  };
+
 }])
 
 
@@ -79,7 +90,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
     $scope.rangeMax = $scope.goal.target * 2;
   });
 
-  // Handlers for arrow buttons to left and right of target range/slider
+
   $scope.incrementTarget = function() {
     $scope.goal.target++;
   };

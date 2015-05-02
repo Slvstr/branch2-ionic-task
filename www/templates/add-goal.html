@@ -7,7 +7,7 @@
   <ion-content class="padding">
     <div class="card">
       <label class="item item-input item-floating-label">
-        <h2 class="input-label style="margin: 0 auto;">I Want To...</h2>
+        <h2 class="input-label" style="margin: 0 auto;">I Want To...</h2>
         <input type="text" ng-model="newGoal.name" style="text-align: center;" placeholder="I Want To..." required>          
       </label>
       <div class="item">
@@ -15,14 +15,12 @@
           <h2 class="target-display">{{newGoal.target}}</h2>
           <h4 class="target-display">times/day</h2>                    
         </div>
-      </div>
-      <label class="item">
         <div class="range range-assertive">
-          <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
-          <input type="range" name="frequency" min="0" max="20" ng-model="newGoal.target" required>
-          <i class="icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
+          <i class="button button-icon button-clear icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
+          <input type="range" name="newGoalRange" min="0" max="20" value="newGoal.target" ng-model="newGoal.target">
+          <i class="button button-icon button-clear icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
         </div>
-      </label>
+      </div>
     </div>
     <button class="button button-block footer-bar button-balanced" ng-click="saveNewGoal(newGoal)">Save</button>
   </ion-content>

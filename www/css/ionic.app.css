@@ -7708,6 +7708,9 @@ a.button {
   font-size: 70px !important;
   margin: 30% auto; }
 
+.goal-item h2, .goal-item p {
+  margin-left: 20px; }
+
 .add-progress {
   color: #ef473a;
   position: absolute;

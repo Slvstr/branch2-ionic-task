@@ -69,6 +69,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin: 30% auto;
 }
 
+
+.goal-item {
+  h2, p {
+    margin-left: 20px;
+  }
+}
+
 .add-progress {
   color: $assertive;
   position: absolute;

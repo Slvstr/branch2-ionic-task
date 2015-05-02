@@ -22,7 +22,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
       password: $scope.password
     })
     .then(function(authData) {
-      $state.go('tab.dash');
+      $state.go('tab.goals');
     })
     .catch(function(error) {
       console.error(error);
@@ -48,8 +48,6 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
     });
   };
 }])
-
-.controller('DashCtrl', function($scope) {})
 
 
 // Controller for Goals list view

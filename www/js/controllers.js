@@ -62,6 +62,10 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
   };
 
 
+  $scope.deleteGoal = function(goal) {
+    return $scope.goals.$remove(goal);
+  };
+
 }])
 
 

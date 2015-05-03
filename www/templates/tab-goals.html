@@ -4,7 +4,6 @@
       <ion-item class="item-remove-animate item-icon-left item-icon-right goal-item" ng-repeat="goal in goals" type="item-text-wrap" href="#/tab/goals/{{goal.$id}}">
         <i ng-click="addProgress($event, goal)" class="button button-icon icon ion-ios-plus-outline add-progress"></i>
         <h2>{{goal.name}}</h2>
-        <p>{{goal.description}}</p>
         <p>{{goal.getActiveProgress().count}} out of  {{goal.target}} completed</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 

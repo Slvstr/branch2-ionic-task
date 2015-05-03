@@ -142,7 +142,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
   };
 
   $scope.showNewGoalForm = function() {
-    $scope.newGoal = {name: '', description: '', target: 0, progress: []};
+    $scope.newGoal = {name: '', target: 0, progress: []};
     $scope.modal.show();
     console.dir($scope.newGoal);
   };

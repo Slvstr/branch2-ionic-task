@@ -249,4 +249,32 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
     Auth.$unauth();
     $state.go('login');
   };
-});
+})
+
+.controller('ChangePasswordCtrl', ['$scope', 'Auth', function($scope, Auth) {
+
+  // Object to send to angularFire's $changePassword method
+  $scope.credentials = {};
+  $scope.credentials.email = Auth.$getAuth().password.email;
+
+
+  // Make sure new passwords match, call the $changePassword api, and show success or error messages
+  $scope.changePassword = function() {
+    if ($scope.credentials.newPassword === $scope.comparePassword) {
+      Auth.$changePassword($scope.credentials)
+      .then(function() {
+        $scope.successMessage = "Password change successful";
+
+        $timeout(function() {
+          $scope.successMessage = '';
+        })
+        .catch(function(error) {
+          $scope.changePasswordError = error.message;
+        });
+      });
+    }
+    else {
+      $scope.changePasswordError = 'New passwords do not match';
+    }
+  };
+}]);

@@ -118,6 +118,17 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
         controller: 'AccountCtrl'
       }
     }
+  })
+
+  .state('tab.change-password', {
+    url: '/account/change-password',
+    cache: false,
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/change-password.html',
+        controller: 'ChangePasswordCtrl'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback

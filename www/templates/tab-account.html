@@ -1,12 +1,18 @@
 <ion-view view-title="Account">
-  <ion-content>
-    <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    </ion-list>
-    <button class="button button-full button-assertive" ng-click="logout()">
-      Log Out
-    </button>
-  </ion-content>
+  <ion-pane class="account">
+    <div class="logo">
+      <img src="img/branch2_goaltracker_logo.png" alt="Logo" height="250" width="250">
+    </div>
+    <div class="row buttons padding">
+      <button class="button col button-positive" ng-click="logout()">
+        Log Out
+      </button>      
+      <a href="#/tab/account/change-password" class="button col button-positive">Change Password</a>
+    </div>
+  </ion-pane>
 </ion-view>
+
+
+
+
+

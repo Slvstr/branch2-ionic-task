@@ -7675,13 +7675,15 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-.welcome span {
+.welcome span, .account span {
   font-size: 36px;
   color: #444;
   margin: 0 10px; }
-.welcome .buttons {
+.welcome .buttons, .account .buttons {
   position: absolute;
   bottom: 100px; }
+  .welcome .buttons .button, .account .buttons .button {
+    margin: 5px; }
 
 .logo {
   position: absolute;

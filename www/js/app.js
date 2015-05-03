@@ -21,7 +21,7 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
   // When user is logged out send them to the login state
   Auth.$onAuth(function(authData) {
     if (!authData) {
-      $state.go('login');
+      $state.go('welcome');
     }
   });
 
@@ -52,13 +52,25 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // Login state
+  // First screen the user sees.  Child views for login or signup
+  .state('welcome', {
+    url: '/welcome',
+    templateUrl: 'templates/welcome.html',
+    controller: 'WelcomeCtrl'
+  })
 
   .state('login', {
     url: '/login',
     cache: false, // Don't cache login view so the controller can hide the navbar each time it is shown
     templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
+    controller: 'LoginCtrl'        
+  })
+
+  .state('signup', {
+    url: '/signup',
+    cache: false,
+    templateUrl: 'templates/sign-up.html',
+    controller: 'SignUpCtrl'
   })
 
   // setup an abstract state for the tabs directive
@@ -116,6 +128,6 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/welcome');
 
 });

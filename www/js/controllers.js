@@ -1,10 +1,25 @@
 angular.module('goaltracker.controllers', ['goaltracker.services'])
 
+
+.controller('WelcomeCtrl', ['$ionicNavBarDelegate', function($ionicNavBarDelegate) {
+  // Hide navbar
+  $ionicNavBarDelegate.showBar(false);
+}])
+
+
+
+
 .controller('LoginCtrl', ['Auth', '$state', '$scope', '$ionicNavBarDelegate', '$ionicLoading',
   function(Auth, $state, $scope, $ionicNavBarDelegate, $ionicLoading) {
 
-  // Hide the nav bar on the login screen
+  // Hide the navbar
   $ionicNavBarDelegate.showBar(false);
+
+
+  // Allow user to swipe back to welcome screen
+  $scope.goBack = function() {
+    return $state.go('welcome');
+  };
 
 
   // Log user in via Firebase's email/password auth option
@@ -50,6 +65,63 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 }])
 
 
+.controller('SignUpCtrl', ['$scope', 'Auth', '$state', '$ionicNavBarDelegate', function($scope, Auth, $state, $ionicNavBarDelegate) {
+  
+  // Hide navbar
+  $ionicNavBarDelegate.showBar(false);
+
+
+  // Allow user to swipe back to welcome screen
+  $scope.goBack = function() {
+    return $state.go('welcome');
+  };
+
+
+  $scope.createUser = function() {
+    
+    // Make sure passwords match before continuing
+    if ($scope.newUser.password1 !== $scope.newUser.password2) {
+      $scope.signUpError = 'Passwords did not match';
+      $scope.newUser.password1 = undefined;
+      $scope.newUser.password2 = undefined;
+      return;
+    }
+    
+    /******************************************************************************
+     * Create a new user
+     * Then log them in and send them to the goals view
+     * Or show a message if there was an error
+     *****************************************************************************/
+    Auth.$createUser({
+      email: $scope.newUser.email,
+      password: $scope.newUser.password1
+    })
+    .then(function(authData) {
+      Auth.$authWithPassword({
+        email: $scope.newUser.email,
+        password: $scope.newUser.password1,
+      })
+      .then(function() {
+        $state.go('tab.goals');
+      })
+      .catch(function() {
+        console.error('User was created but could not be logged in');
+        $state.go('login');
+      });
+      
+    })
+    .catch(function(error) {
+      console.dir(error);
+      $scope.signUpError = error.message;
+
+      // reset all fields.  Could possibly improve by keeping email when password is invalid but email is recognized;
+      $scope.newUser = null;
+    });
+  };
+}])
+
+
+
 // Controller for Goals list view
 .controller('GoalsCtrl', ['$scope', 'Goals', 'UserID', '$ionicModal', function($scope, Goals, UserID, $ionicModal) {
   $scope.goals = Goals;
@@ -88,7 +160,8 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
       });
     }
     else {
-      console.log('uh oh');
+      // HTML validation should prevent this from happening
+      throw new Error('Goals must have a name and a target');
     }
   };
 
@@ -101,7 +174,6 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
   // Handlers for arrow buttons to left and right of target range/slider
   $scope.incrementTarget = function() {
     $scope.newGoal.target++;
-    console.log('increment target called');
   };
 
   $scope.decrementTarget = function() {
@@ -151,6 +223,10 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
   };
 
   // Persist any changes when we leave this state
+  // This is inconsistent with the rest of the interaction model
+  // User may not expect that the back button saves their changes
+  // Maybe it would be better to save each change immediately and show a transient visual confirmation
+  // Or copy goal into a new object that we either save with a save button
   $scope.$on('$stateChangeStart', function(event) {
     // Make sure we have a Firebase object to save
     if ($scope.goal.$save) {
@@ -167,10 +243,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 
 
 .controller('AccountCtrl', function($scope, Auth, $state) {
-  $scope.settings = {
-    enableFriends: true
-  };
-
+  
   $scope.logout = function() {
     Auth.$unauth();
     $state.go('login');

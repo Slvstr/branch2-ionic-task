@@ -1,17 +1,17 @@
-<div class="login">
+<div class="login" on-swipe-right="goBack()">
   <div class="logo">
     <img class="title-image" src="img/branch2_goaltracker_logo.png" alt="Logo" height="250" width="250">
   </div>
   
   <div class="login-control padding">
     <form ng-submit="login()">
-      <div class="item bar bar-assertive" ng-show="loginError">
+      <div class="item bar bar-assertive" ng-show="!!loginError">
         {{loginError}}
       </div>
       <div class="list list-inset">
         <label class="item item-input">
           <i class="icon ion-at" ng-class="{emailError: icon-assertive}"></i>
-          <input type="email" ng-model="email" placeholder="Email" required>
+          <input type="email" ng-model="email" placeholder="Email" autofocus="true" required>
         </label>
 
         <label class="item item-input">
@@ -25,6 +25,3 @@
     </form>
   </div>  
 </div>
-
-
-

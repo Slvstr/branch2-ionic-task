@@ -4,7 +4,7 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
 /******************************************************************************
  * Run 
  *****************************************************************************/
-.run(function($ionicPlatform, Auth, $state, GoalList) {
+.run(function($ionicPlatform, Auth, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -84,6 +84,7 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
 
   .state('tab.goals', {
     url: '/goals',
+    cache: false,
     views: {
       'tab-goals': {
         templateUrl: 'templates/tab-goals.html',
@@ -91,16 +92,8 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
       }
     },
     resolve: {
-      UserID: ['Auth', function(Auth) {
-        return Auth.$requireAuth().then(function(authData) {
-          // console.dir(authData);
-          return authData.uid;
-        });
-      }],
       Goals: ['GoalList', function(GoalList) {
-        return GoalList.then(function(goals) {
-          return goals.$loaded();
-        });
+        return GoalList();
       }]
     }
   })

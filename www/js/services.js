@@ -18,7 +18,6 @@ angular.module('goaltracker.services', ['firebase'])
 
 
 
-
 /******************************************************************************
  * FirebaseGoal Service
  * Extends $firebaseObject to add methods for managing progress events
@@ -108,37 +107,43 @@ angular.module('goaltracker.services', ['firebase'])
 
 
 
-/******************************************************************************
- * GoalsService:
- * Returns promise for use in a resolve block for the router
- * This is because we first need a user id before we can fetch the user's goals
- * An alternative approach would be to return a factory function that the goals 
- * controller could call after getting a user id from Auth.  Since the goals view
- * is worthless without the user's goals, it seemed more appropriate to ensure
- * they are loaded via resolve
- *****************************************************************************/
+
 .factory('GoalList', ['FirebaseRef', 'FirebaseGoals', 'Auth', '$q', function(FirebaseRef, FirebaseGoals, Auth, $q) {
-  
-  // Returns a promise that is resolved with our extended $firebaseArray when the user is authenticated
-  return $q(function(resolve, reject) {
-    var goalsRef;
-    
-    Auth.$onAuth(function(authData) {
-      if (authData && authData.uid) {
-        goalsRef = FirebaseRef.child('goals').child(authData.uid);
-        resolve(new FirebaseGoals(goalsRef));
-      }
-    });
+  // Cache for user's goals
+  var _goals;
+
+
+  // Clear the cache when user logs out
+  Auth.$onAuth(function(authData) {
+    if (!authData) {
+      _goals = null;
+    }
   });
 
 
-  // return function() {
-  //   return Auth.$waitForAuth().then(function(authData) {
-  //     var goalsRef = FirebaseRef.child('goals').child(authData.uid);
-  //     return new FirebaseGoals(goalsRef);
+  // If goals are already cached, resolve the promise with them
+  // Otherwise get user id, then fetch user's goals and cache them
+  return function() {
+    return $q(function(resolve, reject) {
+      var goalsRef;
 
-  //   });
-  // };
+      if (_goals) {
+        _goals.$loaded().then(function(goals) {
+          resolve(goals);
+        });
+      }
+      else {
+        Auth.$waitForAuth().then(function(authData) {
+          goalsRef = FirebaseRef.child('goals').child(authData.uid);
+          _goals = new FirebaseGoals(goalsRef);
+          _goals.$loaded().then(function(goals) {
+            resolve(goals);
+          });
+        })
+      }
+    });
+  };
+
 
 }]);
 

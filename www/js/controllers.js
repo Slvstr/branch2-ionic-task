@@ -37,7 +37,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
       password: $scope.password
     })
     .then(function(authData) {
-      $state.go('tab.goals');
+      return $state.go('tab.goals');
     })
     .catch(function(error) {
       console.error(error);
@@ -123,7 +123,8 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 
 
 // Controller for Goals list view
-.controller('GoalsCtrl', ['$scope', 'Goals', 'UserID', '$ionicModal', function($scope, Goals, UserID, $ionicModal) {
+// Gets Goals from router's resolve block, so they are guaranteed to be present when view loads
+.controller('GoalsCtrl', ['$scope', 'Goals', '$ionicModal', function($scope, Goals, $ionicModal) {
   $scope.goals = Goals;
 
   $ionicModal.fromTemplateUrl('templates/add-goal.html', {
@@ -187,7 +188,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
   function($scope, $stateParams, GoalList, $ionicNavBarDelegate, $ionicHistory, $ionicPopup) {
 
   // Get user goals.  The promise should be resolved by the time anyone gets to this part of the app.
-  GoalList.then(function(goals) {
+  GoalList().then(function(goals) {
     $scope.goals = goals;
     $scope.goal = $scope.goals.$getRecord($stateParams.goalID);
     $scope.rangeMax = $scope.goal.target * 2;

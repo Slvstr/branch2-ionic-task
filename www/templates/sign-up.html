@@ -1,7 +1,7 @@
 <ion-pane class="padding signup" on-swipe-right="goBack()">
 	<form ng-submit="createUser">
 		<div class="card">
-			<p class="item item-assertive" ng-show"!!signUpError">
+			<p class="item item-assertive" ng-show="!!signUpError">
 				{{signUpError}}
 			</p>
 		  <label class="item item-input item-floating-label">

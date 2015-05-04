@@ -49,7 +49,6 @@ angular.module('goaltracker.services', ['firebase'])
   return $firebaseObject.$extend({
 
     getActiveProgress: function() {
-      progressCheckCounter++;
       var self = this;
       var today = Date.now();
       // If the goal has no progress there is no use in comparing dates.  Just return 

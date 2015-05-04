@@ -26,17 +26,6 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
   });
 
 
-  // Testing Data: stick a goal in the firebase db
-  // GoalsService().then(function(fbArray) {
-  //   var timestamp = Date.now();
-  //   fbArray.$add({
-  //     name: 'Test Goal #1',
-  //     description: 'First goal talky talk',
-  //     target: 3,
-  //     progress: [{progressDate: timestamp, count: 2}]
-  //   });
-  // });
-
 })
 
 

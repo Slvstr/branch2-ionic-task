@@ -45,13 +45,11 @@ angular.module('goaltracker.services', ['firebase'])
     this.count = 0;
   }
 
-  var progressCheckCounter = 0;
 
   return $firebaseObject.$extend({
 
     getActiveProgress: function() {
       progressCheckCounter++;
-      // console.log('getActiveProgress has been called ' + progressCheckCounter + ' times');
       var self = this;
       var today = Date.now();
       // If the goal has no progress there is no use in comparing dates.  Just return 
@@ -139,7 +137,7 @@ angular.module('goaltracker.services', ['firebase'])
           _goals.$loaded().then(function(goals) {
             resolve(goals);
           });
-        })
+        });
       }
     });
   };

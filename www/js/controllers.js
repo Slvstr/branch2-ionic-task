@@ -36,7 +36,7 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
       email: $scope.email,
       password: $scope.password
     })
-    .then(function(authData) {
+    .then(function() {
       return $state.go('tab.goals');
     })
     .catch(function(error) {

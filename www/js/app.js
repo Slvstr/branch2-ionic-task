@@ -95,6 +95,13 @@ angular.module('goaltracker', ['ionic', 'goaltracker.controllers', 'goaltracker.
         templateUrl: 'templates/goal-detail.html',
         controller: 'GoalDetailCtrl'
       }
+    },
+    resolve: {
+      Goal: ['GoalList', '$stateParams', function(GoalList, $stateParams) {
+        return GoalList().then(function(goals) {
+          return goals.$getRecord($stateParams.goalID);
+        });
+      }]
     }
   })
 

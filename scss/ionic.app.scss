@@ -143,6 +143,24 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 
+ion-slide-box {
+  height: 100%;
+}
+
+.goal-graph {
+  height: 400px;
+  transform: rotate(-90deg);
+  border-left: 3px solid black;
+  div {
+    background: rgb(30,30,200);
+    padding: 2px;
+    height: 50px;
+    margin: 1px;
+    color: white;
+  }
+}
+
+
 .change-password {
   margin-top: 40px;
 }

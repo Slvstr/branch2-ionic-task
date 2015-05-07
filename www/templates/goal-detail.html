@@ -1,25 +1,35 @@
 <ion-view>
   <ion-nav-title>{{goal.name}}</ion-nav-title>
-  <ion-content class="padding">
-    <div class="card">
-      <label class="item item-input item-floating-label">
-        <span class="input-label input-label-center">Goal Title</span>
-        <input type="text" class="input-label-center" ng-model="goal.name" placeholder="Goal Title">
-      </label>
-      <div class="item">
-        <div class="input-label-center">
-          <h2>{{goal.target}}</h2>
-          <h4>times / day</h4>        
+  <ion-content>
+    <ion-slide-box class="padding">
+      <ion-slide class="goal-details">
+        <div class="card">
+          <label class="item item-input item-floating-label">
+            <span class="input-label input-label-center">Goal Title</span>
+            <input type="text" class="input-label-center" ng-model="goal.name" placeholder="Goal Title">
+          </label>
+          <div class="item">
+            <div class="input-label-center">
+              <h2>{{goal.target}}</h2>
+              <h4>times / day</h4>        
+            </div>
+            <div class="range range-assertive">
+              <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
+              <input type="range" name="frequency" min="0" max="{{rangeMax}}" ng-model="goal.target">
+              <i class="icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
+            </div>
+          </div>
         </div>
-        <div class="range range-assertive">
-          <i class="icon ion-ios-arrow-back" ng-click="decrementTarget()"></i>
-          <input type="range" name="frequency" min="0" max="{{rangeMax}}" ng-model="goal.target">
-          <i class="icon ion-ios-arrow-forward" ng-click="incrementTarget()"></i>
+        <div class="bar button-bar padding">
+          <button class="button button-block button-clear button-lg button-assertive" ng-click="deleteGoal()">Delete</button>
         </div>
-      </div>
-    </div>
-    <div class="bar button-bar padding">
-      <button class="button button-block button-clear button-lg button-assertive" ng-click="deleteGoal()">Delete</button>
-    </div>
+      </ion-slide>
+
+      <ion-slide>
+        <div class="card padding">
+          <div class="goal-graph padding" goal-graph></div>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
   </ion-content>
 </ion-view>

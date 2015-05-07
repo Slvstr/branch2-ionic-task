@@ -184,16 +184,19 @@ angular.module('goaltracker.controllers', ['goaltracker.services'])
 }])
 
 
-.controller('GoalDetailCtrl', ['$scope', '$stateParams', 'GoalList', '$ionicNavBarDelegate', '$ionicHistory', '$ionicPopup',
-  function($scope, $stateParams, GoalList, $ionicNavBarDelegate, $ionicHistory, $ionicPopup) {
+.controller('GoalDetailCtrl', ['$scope', '$stateParams', 'GoalList', 'Goal', '$ionicNavBarDelegate', '$ionicHistory', '$ionicPopup',
+  function($scope, $stateParams, GoalList, Goal, $ionicNavBarDelegate, $ionicHistory, $ionicPopup) {
 
   // Get user goals.  The promise should be resolved by the time anyone gets to this part of the app.
   GoalList().then(function(goals) {
     $scope.goals = goals;
-    $scope.goal = $scope.goals.$getRecord($stateParams.goalID);
-    $scope.rangeMax = $scope.goal.target * 2;
   });
 
+  // Goal is passed from resolve block
+  $scope.goal = Goal;
+
+  // Current target will always be half of the range slider
+  $scope.rangeMax = $scope.goal.target * 2;
 
   $scope.incrementTarget = function() {
     $scope.goal.target++;
